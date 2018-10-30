@@ -20,7 +20,7 @@ def print_func_time(function):
 
 @print_func_time
 def rgb2gray(rgb):
-    return np.dot(rgb[...,:3], [0.299, 0.587, 0.114])
+    return np.around(np.dot(rgb[...,:3], [0.30, 0.59, 0.11]), 0).astype(np.int8)
 
 @print_func_time
 def tenegrad(gray):
@@ -58,13 +58,7 @@ def getImgFromDir(path):
     return sorted(imgs, key=lambda f: f[-12:-4])
 
 @print_func_time
-def calcEva(evas, gray, evaFunc):
-    h,w = gray.shape
-    graymap = (c_char*(h*w))()
-    n = 0
-    for i in gray.reshape(1,-1)[0]:
-        graymap[n] = int(i)
-        n+=1
+def calcEva(evas, w, h, graymap, evaFunc):
 
     func = evaFunc.tenegrad
     func.restype = c_double
@@ -102,18 +96,28 @@ def calcEva(evas, gray, evaFunc):
     evas['grayVariance'].append(eva)
 
 @print_func_time
+def np2c(gray):
+    h,w = gray.shape
+    graymap = gray.ctypes.data_as(c_char_p)
+    return w, h, graymap
+
+@print_func_time
 def calcEvalutions(imgs, evaFunc):
     evas = collections.defaultdict(list)
     for f in imgs:
         img = mpimg.imread(f)
         gray = rgb2gray(img)
         #print(gray.shape)
-        calcEva(evas, gray, evaFunc)
+
+        #用numpy提供的方法，大概从1.6s减到0.25s
+        h,w = gray.shape
+        graymap = gray.ctypes.data_as(c_char_p)
+        #w, h, graymap = np2c(gray)
+        calcEva(evas, w, h, graymap, evaFunc)
 
     with open('data.txt', 'a+') as fp:
         for k,v in evas.items():
-            fp.write(k+'\n')
-            fp.write(f'{v}'+'\n')
+            fp.write(f'{k}{v}'+'\n')
 
 if __name__ == '__main__':
     evaFunc = CDLL('./eva.so')
