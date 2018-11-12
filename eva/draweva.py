@@ -14,8 +14,8 @@ with open('data.txt', 'r') as fp:
         maxdata = max(data)
         data = [x/maxdata for x in data]
         index = list(range(len(data)))
-        print(name)
-        print(type(data))
+        #print(name)
+        #print(type(data))
         plt.plot(index, data, linewidth=0.5 ,label=name)
         plt.legend()
     #ax = fig.add_subplot(131)
@@ -27,5 +27,5 @@ with open('data.txt', 'r') as fp:
     #plt.imshow(gray, cmap='gray')
     #index = list(range(0, len(evas)))
     #plt.plot(index, evas)
-        plt.show()
+    plt.show()
 
