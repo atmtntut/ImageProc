@@ -1,5 +1,5 @@
 import cv2
-assert cv2.__version__[0] == '3'
+#assert cv2.__version__[0] == '3'
 import numpy as np
 import os
 import glob
@@ -20,7 +20,7 @@ def get_K_and_D(w, h, imgsPath):
     # 在图像平面的二维点
     imgpoints = [] 
 
-    images = glob.glob(imgsPath + '/*.jpeg')
+    images = glob.glob(imgsPath + '/*.jpg')
     for fname in images:
         img = cv2.imread(fname)
         gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -38,10 +38,10 @@ def get_K_and_D(w, h, imgsPath):
             imgpoints.append(corners)
 
             # 将角点在图像上显示
-            img = cv2.drawChessboardCorners(img, (w,h), corners, ret)
-            cv2.imshow('findCorners',cv2.resize(img, (0, 0), fx=0.5, fy=0.5))
-            cv2.waitKey()
-    cv2.destroyAllWindows()
+            #img = cv2.drawChessboardCorners(img, (w,h), corners, ret)
+            #cv2.imshow('findCorners',cv2.resize(img, (0, 0), fx=0.5, fy=0.5))
+            #cv2.waitKey()
+    #cv2.destroyAllWindows()
 
     N_OK = len(objpoints)
     K = np.zeros((3, 3))
@@ -70,17 +70,15 @@ def get_K_and_D(w, h, imgsPath):
     
     return DIM, K, D
 
-def undistort(img_path, DIM, K, D):
-    img = cv2.imread(img_path)
+def undistort(img, DIM, K, D):
     img = cv2.resize(img, DIM)
     map1, map2 = cv2.fisheye.initUndistortRectifyMap(K, D, np.eye(3), K, DIM,cv2.CV_16SC2)
     undistorted_img = cv2.remap(img, map1, map2, interpolation=cv2.INTER_LINEAR,borderMode=cv2.BORDER_CONSTANT)
-
-    cv2.imshow('undistortImg',cv2.resize(undistorted_img, (0, 0), fx=0.5, fy=0.5))
-    cv2.waitKey()
-    cv2.destroyAllWindows()
-
-    cv2.imwrite('unfisheyeImage.jpg', undistorted_img)
+    #cv2.imshow('undistortImg',cv2.resize(undistorted_img, (0, 0), fx=0.5, fy=0.5))
+    #cv2.waitKey()
+    #cv2.destroyAllWindows()
+    #cv2.imwrite('unfisheyeImage.jpg', undistorted_img)
+    return undistorted_img
 
 if __name__=='__main__':
     # 计算内参和矫正系数
@@ -88,7 +86,9 @@ if __name__=='__main__':
     # checkerboard： 棋盘格的格点数目
     # imgsPath: 存放鱼眼图片的路径
     '''
-    DIM, K, D = get_K_and_D(6,9, 'Image')
-    undistort('Image/fisheye1.jpeg', DIM, K, D)
+    DIM, K, D = get_K_and_D(4,7, 'chess')
+    #DIM, K, D = get_K_and_D(6,9, 'Image')
+    img = cv2.imread('image/b.jpg')
+    undistort(img, DIM, K, D)
 
 
