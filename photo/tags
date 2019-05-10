@@ -1,0 +1,67 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Camera	camera.py	/^class Camera():$/;"	c	inherits:
+D	general_photo.py	/^    D = param['D']$/;"	v
+DIM	general_photo.py	/^    DIM = param['DIM']$/;"	v
+GSerial	serial_tool.py	/^class GSerial():$/;"	c	inherits:
+K	general_photo.py	/^    K = param['K']$/;"	v
+Light	camera.py	/^class Light():$/;"	c	inherits:
+__enter__	serial_tool.py	/^    def __enter__(self):$/;"	m	class:GSerial	file:	access:private
+__exit__	serial_tool.py	/^    def __exit__(self, exc_type, exc_val, exc_tb):$/;"	m	class:GSerial	file:	access:private
+__init__	camera.py	/^    def __init__(self):$/;"	m	class:Camera	access:public
+__init__	camera.py	/^    def __init__(self):$/;"	m	class:Light	access:public
+__init__	serial_tool.py	/^    def __init__(self, path, baud, parity='N', stop=1, bytesize=8):$/;"	m	class:GSerial	access:public
+call_fun	camera.py	/^    def call_fun(*args, **kwargs):$/;"	f	function:run_time	access:public
+camera	camera.py	/^    camera = Camera()$/;"	v	class:Camera
+camera	general_photo.py	/^    camera = Camera()$/;"	v
+camera_calibr	general_photo.py	/^def camera_calibr(chess_path):$/;"	f	access:public
+close	camera.py	/^    def close(self):$/;"	m	class:Camera	access:public
+close	camera.py	/^    def close(self):$/;"	m	class:Light	access:public
+close	serial_tool.py	/^    def close(self):$/;"	m	class:GSerial	access:public
+col	general_photo.py	/^    col = param['col']$/;"	v
+corr_photo	general_photo.py	/^def corr_photo(img, DIM, K, D):$/;"	f	access:public
+extra_outline	threshold.py	/^def extra_outline(gls, num):$/;"	f	access:public
+get_K_and_D	fisheye.py	/^def get_K_and_D(w, h, imgsPath):$/;"	f	access:public
+get_dev	camera.py	/^    def get_dev(self):$/;"	m	class:Camera	access:public
+get_dev	camera.py	/^    def get_dev(self):$/;"	m	class:Light	access:public
+get_gls	general_photo.py	/^def get_gls(img):$/;"	f	access:public
+get_outline	rect_extra.py	/^def get_outline(img):$/;"	f	access:public
+get_picture	camera.py	/^    def get_picture(self):$/;"	m	class:Camera	access:public
+get_vertex	rect_extra.py	/^def get_vertex(img, opened, count):$/;"	f	access:public
+glses	general_photo.py	/^    glses = get_gls(img)$/;"	v
+h	make_chkbd.py	/^h = 8$/;"	v
+height	make_chkbd.py	/^height = h*step$/;"	v
+image	make_chkbd.py	/^image = np.zeros((height, width),dtype = np.uint8)$/;"	v
+img	fisheye.py	/^    img = cv2.imread('image\/b.jpg')$/;"	v
+img	general_photo.py	/^    img = corr_photo(img, DIM, K, D)$/;"	v
+img	general_photo.py	/^    img = take_photo(camera)$/;"	v
+img	threshold.py	/^    img = cv2.imread('image\/gls1.jpg')$/;"	v
+light	camera.py	/^    def light(self, action):$/;"	m	class:Light	access:public
+light	general_photo.py	/^    light = Light()$/;"	v
+mask	general_photo.py	/^        mask = to_mask(gls, row, col)$/;"	v
+mask	threshold.py	/^    mask = to_mask(img, 22, 54)$/;"	v
+open	camera.py	/^    def open(self):$/;"	m	class:Camera	access:public
+open	serial_tool.py	/^    def open(self, path, baud, parity, stop, bytesize):$/;"	m	class:GSerial	access:public
+param	general_photo.py	/^        param = eval(fp.read())$/;"	v
+perspective_transf	rect_extra.py	/^def perspective_transf(box, src_img):$/;"	f	access:public
+read	serial_tool.py	/^    def read(self, length=0, timeout=0):$/;"	m	class:GSerial	access:public
+reboot	camera.py	/^    def reboot(self):$/;"	m	class:Camera	access:public
+resize	rect_extra.py	/^def resize(img, per):$/;"	f	access:public
+row	general_photo.py	/^    row = param['row']$/;"	v
+run_time	camera.py	/^def run_time(func):$/;"	f	access:public
+set_camera	camera.py	/^    def set_camera(self, size, baud=0):$/;"	m	class:Camera	access:public
+set_led	camera.py	/^    def set_led(self, action):$/;"	m	class:Camera	access:public
+snap	camera.py	/^    def snap(self):$/;"	m	class:Camera	access:public
+step	make_chkbd.py	/^step = 40$/;"	v
+take_photo	general_photo.py	/^def take_photo(camera):$/;"	f	access:public
+test	serial_tool.py	/^def test():$/;"	f	access:public
+threshold	threshold.py	/^def threshold(gray):$/;"	f	access:public
+to_mask	threshold.py	/^def to_mask(img, row, col, level=1):$/;"	f	access:public
+undistort	fisheye.py	/^def undistort(img, DIM, K, D):$/;"	f	access:public
+w	make_chkbd.py	/^w = 5$/;"	v
+width	make_chkbd.py	/^width = w*step$/;"	v
+write	serial_tool.py	/^    def write(self, text):$/;"	m	class:GSerial	access:public

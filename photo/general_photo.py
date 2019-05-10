@@ -22,21 +22,18 @@ def corr_photo(img, DIM, K, D):
 def get_gls(img):
     glses = []
     _, gray, RedThresh, closed, opened = get_outline(img)
-    boxs, draws = get_vertex(img, opened, 4)
+    boxs, _ = get_vertex(img, opened, 4)
     # 通过坐标对玻片排序，如果托盘摆放方向改变需要修改排序方式
     # 当前height值越大则玻片序号越小，即图片最低下是1号，最上面是4号
     boxs.sort(key=lambda x: x[0][1], reverse=True)
-    for i in range(len(boxs)):
-        gls = perspective_transf(boxs[i], img)
+    for i, box in enumerate(boxs):
+        gls = perspective_transf(box, img)
         glses.append(gls)
         cv2.imwrite(f'gls{i}.jpg', gls)
-
+        cv2.imshow(f'gls{i}.jpg', gls)
     return glses
 
-if __name__=='__main__':
-    camera = Camera()
-    light = Light()
-    light.light('on')
+def img_to_mask(img):
     #获取标定信息
     with open('cfg.inf', 'r') as fp:
         param = eval(fp.read())
@@ -44,21 +41,32 @@ if __name__=='__main__':
     DIM = param['DIM']
     K = param['K']
     D = param['D']
+    row = param['row']
+    col = param['col']
+    #矫正
+    img = corr_photo(img, DIM, K, D)
+    cv2.imshow('corr', img)
+    cv2.imwrite('corr.jpg', img)
+    #提取玻片图片
+    glses = get_gls(img)
+    maskes = []
+    for i,gls in enumerate(glses):
+        #将玻片图片转为掩码
+        mask = to_mask(gls, row, col)
+        cv2.imshow(f'mask{i}', mask * 255)
+        maskes.append(mask)
+    return maskes
+
+if __name__=='__main__':
+    camera = Camera()
+    light = Light()
+    light.light('on')
     #拍照
     time.sleep(5)
     img = take_photo(camera)
     light.light('off')
-    cv2.imshow('src', img)
-    #矫正
-    img = corr_photo(img, DIM, K, D)
-    cv2.imshow('corr', img)
-    #提取玻片
-    glses = get_gls(img)
-    for i,gls in enumerate(glses):
-        #将玻片图片转为掩码
-        mask = to_mask(gls, 20, 45)
-        cv2.imshow('mask', mask)
-        #cv2.imshow(f'result{i}', resize(gls, 0.5))
+    #cv2.imshow('src', img)
+    maskes = img_to_mask(img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 

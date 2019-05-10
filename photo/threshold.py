@@ -1,15 +1,14 @@
 from rect_extra import *
+import glob
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import time
-
+index = 0
 def threshold(gray):
     out = gray.copy()
     row, col = gray.shape
-    #S = max(row, col) // 16
     T = 0.15
-    #s = S // 2
     s = 7
     for i in range(row):
         y1 = i - s
@@ -81,20 +80,30 @@ def to_mask(img, row, col, level=1):
     # 寻找凸包轮廓
     gls, cnts = extra_outline(gls, level)
     if True:
+        global index
         for cnt in cnts:
             length = len(cnt)
             # 绘制图像凸包的轮廓
             for i in range(length):
-                cv2.line(gray, tuple(cnt[i][0]), tuple(cnt[(i+1)%length][0]), (0,0,255), 2)
-        cv2.imshow('gray', gray)
-    mask = cv2.resize(gls, (col, row))
-    #cv2.imshow(f'mask', img)
-    #print(img)
+                cv2.line(gray, tuple(cnt[i][0]), tuple(cnt[(i+1)%length][0]), (0,0,255), 1)
+        cv2.imshow(f'gray{index}', gray)
+        index += 1
+    #print(gls.shape)
+    mask = cv2.resize(gls, (int(row/gls.shape[0]*gls.shape[1]), row))
+    diff_col = col - mask.shape[1]
+    if diff_col > 0:
+        mask = np.c_[mask, np.zeros((row, diff_col), np.uint8)]
+    mask = np.clip(mask, 0, 1)
+    #print(mask.shape)
+    #cv2.imshow(f'mask', mask*255)
     return mask
 
 if __name__=='__main__':
-    img = cv2.imread('gls0.jpg')
-    mask = to_mask(img, 20, 45)
-    cv2.imshow(f'mask', mask)
+    images = glob.glob('image/gls*.jpg')
+    for fname in images:
+        #img = cv2.imread('image/gls0.jpg')
+        img = cv2.imread(fname)
+        mask = to_mask(img, 23, 54)
+        cv2.imshow(f'mask{index-1}', mask*255)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
