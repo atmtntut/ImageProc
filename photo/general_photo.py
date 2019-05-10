@@ -1,6 +1,7 @@
 from fisheye import *
 from rect_extra import *
 from camera import *
+from threshold import *
 
 def camera_calibr(chess_path):
     DIM, K, D = get_K_and_D(4,7, chess_path)
@@ -53,9 +54,11 @@ if __name__=='__main__':
     cv2.imshow('corr', img)
     #提取玻片
     glses = get_gls(img)
-
     for i,gls in enumerate(glses):
-        cv2.imshow(f'result{i}', resize(gls, 0.5))
+        #将玻片图片转为掩码
+        mask = to_mask(gls, 20, 45)
+        cv2.imshow('mask', mask)
+        #cv2.imshow(f'result{i}', resize(gls, 0.5))
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
